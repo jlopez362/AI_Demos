@@ -1,0 +1,85 @@
+@inject IImageServices imageServices
+@page "/imagedescription"
+
+@rendermode InteractiveServer
+
+<MudText Typo="Typo.h3">Image description</MudText>
+
+<MudStack>
+    <MudFileUpload T="IBrowserFile" FilesChanged="@((file) => UploadImage(file))">
+        <ButtonTemplate>
+            <MudButton HtmlTag="label" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Image" for="@context.Id">
+                Upload Image
+            </MudButton>
+        </ButtonTemplate>
+    </MudFileUpload>
+
+    <MudPaper Elevation="12" Class="pa-4" style="height: 60vh;">
+        @if(!string.IsNullOrEmpty(_imageSrc))
+        {
+            <MudGrid>
+                <MudItem xs="6">
+                    @if(!string.IsNullOrEmpty(_imageSrc))
+                    {
+                        <MudStack Justify="Justify.Center">
+                            <MudImage Src="@_imageSrc" Alt="" Elevation="25" style="height: 50vh;" Fluid/>
+                        </MudStack>
+                    }
+                </MudItem>
+                <MudItem xs="6">
+                    <MudPaper Elevation="25" Class="pa-4" Style="height: 50vh;">
+                        @if(!string.IsNullOrEmpty(_imageDescription))
+                        {
+                            <MudText>@_imageDescription</MudText>
+                        }
+                        else
+                        {
+                            @if(_loading)
+                            {
+                                <MudStack AlignItems="AlignItems.Center" Justify="Justify.Center">
+                                    <MudProgressCircular Indeterminate />
+                                </MudStack>
+                                
+                            }
+                        }
+                    </MudPaper>
+                </MudItem>
+            </MudGrid>
+        }
+    </MudPaper>
+</MudStack>
+
+@code{
+    private bool _loading = false;
+    private string? _imageSrc = string.Empty;
+    private byte[] _imageArray = [];
+    string? _imageDescription;
+
+    async Task GetImageDescriptionAsync()
+    {
+        if(_imageArray.Length == 0)
+            return;
+
+        _imageDescription = "";
+
+        _loading = true;
+        StateHasChanged();
+        _imageDescription = await imageServices.ImageDescriptionAsync(_imageArray);
+        _loading = false;
+    }
+
+    private async Task UploadImage(IBrowserFile file)
+    {
+        _imageDescription = "";
+        using Stream imageStream = file.OpenReadStream(1024 * 1014 * 10);
+        using MemoryStream ms = new();
+        await imageStream.CopyToAsync(ms);
+
+        _imageSrc = $"data:image/png;base64,{Convert.ToBase64String(ms.ToArray())}";
+        _imageArray = ms.ToArray();
+
+        StateHasChanged();
+        await Task.Delay(100);
+        await GetImageDescriptionAsync();
+    }
+}
