@@ -1,9 +1,14 @@
+using Microsoft.Extensions.Options;
 using Microsoft.SemanticKernel.ImageToText;
 
 namespace AI_Demo.Core.Services;
 
 public class ImageServices : IImageServices
 {
+
+    private readonly HuggingFaceOptions options;
+
+    public ImageServices(IOptions<HuggingFaceOptions> _options) => options = _options.Value;
     
     // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
     #pragma warning disable SKEXP0020 
@@ -13,11 +18,15 @@ public class ImageServices : IImageServices
     {
         try
         {
-            string description = string.Empty;
             if(image.Length == 0)
                 throw new ArgumentException("Invalid image");
 
-            var kernel = Kernel.CreateBuilder().AddHuggingFaceImageToText("Salesforce/blip-image-captioning-base").Build();
+            var kernel = Kernel
+                .CreateBuilder()
+                .AddHuggingFaceImageToText(
+                    model: "Salesforce/blip-image-captioning-base",
+                    apiKey: options.ApiKey
+                ).Build();
 
             var service = kernel.GetRequiredService<IImageToTextService>();
             var imageContent = new ImageContent(image) { MimeType = "image/jpeg"};

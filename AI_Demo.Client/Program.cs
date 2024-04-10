@@ -4,11 +4,18 @@ using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+string? apiKey = Environment.GetEnvironmentVariable("HUGGINGFACE_API_KEY", EnvironmentVariableTarget.Machine);
+
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-builder.Services.AddAICore();
+builder.Services.AddAICore(options => 
+{
+    options.TextModelId = "mistralai/Mistral-7B-Instruct-v0.2";
+    options.ImageToTextModelId = "Salesforce/blip-image-captioning-base";
+    options.ApiKey = apiKey;
+});
 builder.Services.AddMudServices();
 
 var app = builder.Build();

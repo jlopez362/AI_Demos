@@ -5,8 +5,10 @@ namespace AI_Demo.Core.Extensions;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddAICore(this IServiceCollection services)
+    public static IServiceCollection AddAICore(this IServiceCollection services, Action<HuggingFaceOptions> options)
     {
+        services.Configure(options);
+        services.AddSingleton<ITextServices, TextServices>();
         services.AddSingleton<IImageServices, ImageServices>();
         return services;
     }
