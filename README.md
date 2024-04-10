@@ -16,6 +16,8 @@ To use the demos of this project, follow these steps:
 
 To use the artificial intelligence demos in this project, follow these steps:
 
+To run the examples you must have net8.0 installed. [https://dotnet.microsoft.com/en-us/download](https://dotnet.microsoft.com/en-us/download)
+
 1. Browse the project directory to find the different demos available.
 2. Open the AI_Demo.Client directory 
 
@@ -25,10 +27,17 @@ To use the artificial intelligence demos in this project, follow these steps:
 
 ## Examples
 
-Image Description: Example based on the post [Image to Text with Semantic Kernel and HuggingFace](https://devblogs.microsoft.com/semantic-kernel/image-to-text-with-semantic-kernel-and-huggingface/)
+### Image Description
+Example based on the post [Image to Text with Semantic Kernel and HuggingFace](https://devblogs.microsoft.com/semantic-kernel/image-to-text-with-semantic-kernel-and-huggingface/)
 where Semantic Kernel is used with the Hugging Face connector to generate text based on images.
 
 For the example, Blazor was used as the presentation layer, unlike the example that uses WinForms.
 
 https://github.com/jlopez362/AI_Demos/assets/103952844/b3844524-0c26-4c64-81fe-13e15abdd176
+
+### Chatbot
+
+Basic example of a Chatbot Using Semantic Kernel, C#, .NET 8.0, Blazor, and Mistral-7B-Instruct-v0.2 as the Language Model
+
+https://github.com/jlopez362/AI_Demos/assets/103952844/4f98718d-d76b-4c34-b686-bec7bb865f2a
 
