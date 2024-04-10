@@ -1,0 +1,16 @@
+<MudPaper Elevation="2" >
+    <MudStack Row Class="pa-2" AlignItems="AlignItems.Center">
+        <MudAvatar Size="Size.Small" Color="@Color">@UserAvatar</MudAvatar>
+        <MudText>@UserName</MudText>
+    </MudStack>
+    <MudStack Class="pa-2">
+        <MudTextField @bind-Value="@Text" Variant="Variant.Text" ReadOnly AutoGrow DisableUnderLine />
+    </MudStack>
+</MudPaper>
+
+@code{
+    [Parameter] public string? Text {get;set;}
+    [Parameter] public string? UserAvatar {get;set;}
+    [Parameter] public string? UserName {get;set;}
+    [Parameter] public Color Color {get;set;} = Color.Secondary;
+}

@@ -1,0 +1,26 @@
+@page "/chatbot"
+
+@inject ITextServices textServices
+
+<MudText Typo="Typo.h3">Chatbot</MudText>
+
+<MudStack style="height: 80vh; overflow-y: auto">
+    @foreach(var item in _messages)
+    {
+        <ChatText Text="@item.Prompt" UserName="User" UserAvatar="U" Color="Color.Primary" />
+        <ChatText Text="@item.ResponseMessage" UserName="ChatBot" UserAvatar="CB" /> 
+    }
+</MudStack>
+
+<MudStack AlignItems="AlignItems.Center" Row>
+    <MudTextField @bind-Value="@_chatPrompt" Placeholder="Message..." Variant="Variant.Outlined" Margin="Margin.Dense" DisableUnderLine />
+    @if(!_loading)
+    {
+        <MudIconButton Icon="@Icons.Material.Filled.Send" @onclick="SetPrompt" />
+    }
+    else
+    {
+        <MudProgressCircular Size="Size.Small" Color="Color.Primary" Indeterminate />
+    }
+    
+</MudStack>
